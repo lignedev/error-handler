@@ -17,7 +17,7 @@
     },
     "autoload": {
       "psr-4": {
-        "ligne\\": "src"
+        "Ligne\\": "src"
       }
     },
     "minimum-stability": "dev"
