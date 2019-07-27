@@ -1,0 +1,23 @@
+{
+    "name": "ligne/error-hanlder",
+    "type": "library",
+    "description": "Error Handler for Ligne PHP",
+    "keywords": ["log","logging"],
+    "homepage": "https://github.com/lignedev/error-handler",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Albert Eduardo Hidalgo Taveras",
+            "email": "itsalb3rt@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=7.1"
+    },
+    "autoload": {
+      "psr-4": {
+        "ligne\\": "src"
+      }
+    }
+}
