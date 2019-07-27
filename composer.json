@@ -1,5 +1,5 @@
 {
-    "name": "ligne/error-hanlder",
+    "name": "ligne/error-handler",
     "type": "library",
     "description": "Error Handler for Ligne PHP",
     "keywords": ["log","logging"],
