@@ -19,5 +19,6 @@
       "psr-4": {
         "ligne\\": "src"
       }
-    }
+    },
+    "minimum-stability": "dev"
 }
