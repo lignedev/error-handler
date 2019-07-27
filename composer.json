@@ -2,7 +2,7 @@
     "name": "ligne/error-handler",
     "type": "library",
     "description": "Error Handler for Ligne PHP",
-    "keywords": ["log","logging"],
+    "keywords": ["error handler","ligne php"],
     "homepage": "https://github.com/lignedev/error-handler",
     "license": "MIT",
     "authors": [
