@@ -33,6 +33,16 @@ class ErrorHandler
         }
     }
 
+    /**
+     * Esta funcion es utilizada para mostrar los errores mas comunes en una vista
+     * mas amigable para el desarrollador, no deberia estar en modo de produccion ya que
+     * prodria revelar datos que usted no desea que los usuarios sepan
+     *
+     * Acceso a base de datos, rutas, nombre de clases, directorios, etc...
+     * @param $header
+     * @param $description
+     * @param null $route
+     */
     public function showDevMessages($header, $description, $route = null)
     {
         if ($this->enviroment == 'dev') {
@@ -40,7 +50,7 @@ class ErrorHandler
             http_response_code(500);
             include(__DIR__ . '/views/dev/view.php');
             die();
-        } elseif($this->enviroment == 'pro') {
+        } elseif ($this->enviroment == 'pro') {
             http_response_code(500);
             include(__DIR__ . '/views/production/index.html');
             die();
