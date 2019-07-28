@@ -1,6 +1,7 @@
 <?php
 
 namespace Ligne;
+
 /**
  * Captura los errores comunes que pueden ocurrir
  * dentro de un proyecto, esto no manja todos los errores del framework ya que
@@ -12,22 +13,42 @@ namespace Ligne;
  **/
 class ErrorHandler
 {
+    /**
+     * dev = Developer
+     * pro = Production
+     */
+    private $enviroment;
 
-    public function __construct()
+    public function __construct($enviroment)
     {
+        $this->enviroment = $enviroment;
         set_error_handler([$this, 'errorHandler']);
-        register_shutdown_function( [$this,'fatalHandler'] );
+        register_shutdown_function([$this, 'fatalHandler']);
     }
 
     public function errorHandler($errno, $errstr, $errfile, $errline)
     {
-        if($this->is_notice($errno) || $this->is_warning($errno) || $this->is_fatal_error($errno)){
-            $file_without_root_dir = str_replace(str_replace(DIRECTORY_SEPARATOR,'\\',ROOT),'',$errfile);
-            __show_dev_messages__($errstr, "<span class='code'>$errstr</span> " . $file_without_root_dir  . " <span class='code'>on line $errline</span>");
+        if ($this->is_notice($errno) || $this->is_warning($errno) || $this->is_fatal_error($errno)) {
+            $this->showDevMessages($errstr, "<span class='code'>$errstr</span> " . $errfile  . " <span class='code'>on line $errline</span>");
         }
     }
 
-    public function fatalHandler() {
+    public function showDevMessages($header, $description, $route = null)
+    {
+        if ($this->enviroment == 'dev') {
+            ob_clean(); //Limpia lo que sea que este antes de esta salida
+            http_response_code(500);
+            include(__DIR__ . '/views/dev/view.php');
+            die();
+        } elseif($this->enviroment == 'pro') {
+            http_response_code(500);
+            include(__DIR__ . '/views/production/index.html');
+            die();
+        }
+    }
+
+    public function fatalHandler()
+    {
         $errfile = "unknown file";
         $errstr  = "shutdown";
         $errno   = E_CORE_ERROR;
@@ -35,17 +56,17 @@ class ErrorHandler
 
         $error = error_get_last();
 
-        if( $error !== NULL) {
+        if ($error !== NULL) {
             $errfile = $error["file"];
             $errline = $error["line"];
             $errstr  = $error["message"];
-            $file_without_root_dir = str_replace(str_replace(DIRECTORY_SEPARATOR,'\\',ROOT),'',$errfile);
-            __show_dev_messages__(substr($errstr,0,50) . '...' , "<p class='error-description'>$errstr</p> " . $file_without_root_dir  . " <span class='code'>on line $errline</span>");
+            $this->showDevMessages(substr($errstr, 0, 50) . '...', "<p class='error-description'>$errstr</p> " . $errfile  . " <span class='code'>on line $errline</span>");
         }
     }
 
-    private function is_notice($errno){
-        switch ($errno){
+    private function is_notice($errno)
+    {
+        switch ($errno) {
             case E_NOTICE:
             case E_USER_NOTICE:
             case E_DEPRECATED:
@@ -54,21 +75,22 @@ class ErrorHandler
                 return true;
         }
     }
-    private function is_warning($errno){
-        switch ($errno){
+    private function is_warning($errno)
+    {
+        switch ($errno) {
             case E_WARNING:
             case E_USER_WARNING:
                 return true;
         }
     }
 
-    private function is_fatal_error($errno){
-        switch ($errno){
+    private function is_fatal_error($errno)
+    {
+        switch ($errno) {
             case E_ERROR:
             case E_USER_ERROR:
             case E_RECOVERABLE_ERROR:
                 return true;
         }
     }
-
 }
