@@ -46,7 +46,7 @@ class ErrorHandler
     public function showDevMessages($header, $description, $route = null)
     {
         if ($this->enviroment == 'dev') {
-            ob_clean(); //Limpia lo que sea que este antes de esta salida
+            if (ob_get_contents()) ob_clean();
             http_response_code(500);
             include(__DIR__ . '/views/dev/view.php');
             die();
